@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {waitingMessage,startWaitingMessages} from './public/wait-messages.js';
+test('messages change at five second boundaries and describe waiting truthfully',()=>{assert.notDeepEqual(waitingMessage(0),waitingMessage(5));assert.match(waitingMessage(20)[0],/waiting/);assert.deepEqual(waitingMessage(1000),waitingMessage(25));});
+test('actual received text selects the read-along message',()=>assert.match(waitingMessage(1,true)[0],/appearing/));
+test('timer stops through returned cleanup and does not repeat announcements each second',()=>{let time=0,tick,cleared=false,streaming=false;const frames=[];const stop=startWaitingMessages({now:()=>time,isStreaming:()=>streaming,render:frame=>frames.push(frame),schedule:fn=>{tick=fn;return 7;},unschedule:id=>{assert.equal(id,7);cleared=true;}});assert.equal(frames[0].changed,true);time=1000;tick();assert.equal(frames.at(-1).changed,false);time=5000;tick();assert.equal(frames.at(-1).changed,true);streaming=true;tick();assert.match(frames.at(-1).message[0],/appearing/);stop();assert.equal(cleared,true);});

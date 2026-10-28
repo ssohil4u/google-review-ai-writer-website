@@ -1,0 +1,15 @@
+{
+  "name": "google-review-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env scripts/dev.mjs",
+    "build": "node --check worker.mjs && node --check netlify/functions/polish.mjs && node --check public/app.js",
+    "test": "node --test"
+  }
+}

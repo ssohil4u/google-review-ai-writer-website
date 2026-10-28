@@ -1,0 +1,10 @@
+{
+  "businesses": [
+    {
+      "id": "demo-studio",
+      "name": "Demo Studio",
+      "subtitle": "Example business \u2014 replace with your own details",
+      "reviewUrl": ""
+    }
+  ]
+}

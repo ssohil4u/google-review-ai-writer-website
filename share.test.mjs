@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {copyAndOpen} from './public/share.js';
+const url='https://g.page/r/example/review';
+test('copies before navigating current tab',async()=>{const events=[];const result=await copyAndOpen({text:'Review',url,clipboard:{writeText:async()=>events.push('copy')},navigate:target=>{assert.equal(target,url);events.push('navigate');}});assert.deepEqual(events,['copy','navigate']);assert.deepEqual(result,{copied:true,opened:true});});
+test('clipboard denial uses selection fallback before navigation',async()=>{let fallback=false,navigated=false;await copyAndOpen({text:'Review',url,clipboard:{writeText:async()=>{throw Error();}},fallbackCopy:()=>{fallback=true;return true;},navigate:()=>{navigated=fallback;}});assert.equal(navigated,true);});
+test('missing clipboard can still use selection copy',async()=>{assert.deepEqual(await copyAndOpen({text:'Review',fallbackCopy:()=>true}),{copied:true,opened:false});});
+test('both copy methods fail without navigating',async()=>{let navigated=false;await assert.rejects(copyAndOpen({text:'Review',url,clipboard:{writeText:async()=>{throw Error();}},fallbackCopy:()=>false,navigate:()=>{navigated=true;}}));assert.equal(navigated,false);});
+test('navigation failure preserves copy success',async()=>assert.deepEqual(await copyAndOpen({text:'Review',url,clipboard:{writeText:async()=>{}},navigate:()=>{throw Error();}}),{copied:true,opened:false}));
+test('copy-only never navigates',async()=>assert.deepEqual(await copyAndOpen({text:'Review',clipboard:{writeText:async()=>{}},navigate:()=>{throw Error();}}),{copied:true,opened:false}));
