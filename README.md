@@ -1,5 +1,9 @@
 # Google Review Assistant
 
+**[🚀 Try the Live Demo](https://googlenow.netlify.app/)**
+
+Explore the review-writing flow in the live business demo. This repository uses fictional demo details; the hosted demo is a separate branded deployment.
+
 A mobile-first, editable Google review writing assistant with fictional **Demo Studio, Sample City** branding. No real business contacts, review destinations or customer photographs are bundled. Customers choose firsthand experience points, optionally add feedback, generate a draft, then copy it and post it on Google themselves.
 
 ## Features
